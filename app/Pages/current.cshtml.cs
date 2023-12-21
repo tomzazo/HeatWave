@@ -11,12 +11,15 @@ public class CurrentModel : PageModel
 {
     private readonly ILogger<CurrentModel> logger;
     private readonly ITemperatureReadings readings;
+    public readonly IConfiguration config;
+
     public string? Temperature;
     public string? Timestamp;
     public string Emoji = "😎";
 
-    public CurrentModel(ILogger<CurrentModel> logger, ITemperatureReadings readings)
+    public CurrentModel(IConfiguration config, ILogger<CurrentModel> logger, ITemperatureReadings readings)
     {
+        this.config = config;
         this.logger = logger;
         this.readings = readings;
     }
@@ -30,6 +33,16 @@ public class CurrentModel : PageModel
         else if (temp > 25) Emoji = "🥵";
 
         Temperature = reading.temperature!;
-        Timestamp = reading.timestamp.ToString("HH:mm:ss dd.MM.yyyy");
+        DateTime time = reading.timestamp;
+
+        // Set timezone setting if provided in appsetting.json.
+        string? timezone = this.config.GetValue<string>("Localization:Timezone");
+        if (timezone != null)
+        {
+            TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(timezone);
+            time = TimeZoneInfo.ConvertTimeFromUtc(reading.timestamp, tzi);
+        }
+
+        Timestamp = time.ToString("HH:mm:ss dd.MM.yyyy");
     }
 }

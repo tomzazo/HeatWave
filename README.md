@@ -39,6 +39,9 @@ An `app/appsettings.json` file should be created in the following fashion:
   },
   "TemperatureSource": {
     "AzureAPIScope": "[scope_of_an_exposed_entra_id_application_of_the_azure_function_app]"
+  },
+  "Localization": {
+    "Timezone": "CET"
   }
 }
 ```

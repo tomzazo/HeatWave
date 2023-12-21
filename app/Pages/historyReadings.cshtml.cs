@@ -23,8 +23,11 @@ namespace HeatWave.Pages
     {
         private readonly ILogger<HistoryReadingsModel> logger;
         private readonly ITemperatureReadings readings;
-        public HistoryReadingsModel(ILogger<HistoryReadingsModel> logger, ITemperatureReadings readings)
+        public readonly IConfiguration config;
+
+        public HistoryReadingsModel(IConfiguration config, ILogger<HistoryReadingsModel> logger, ITemperatureReadings readings)
         {
+            this.config = config;
             this.logger = logger;
             this.readings = readings;
         }
@@ -33,10 +36,20 @@ namespace HeatWave.Pages
         {
             ReadingsFiltered readingsFiltered = new ReadingsFiltered();
 
+            // Set timezone setting if provided in appsetting.json.
+            string? timezone = this.config.GetValue<string>("Localization:Timezone");
+
             List<Reading> listReadings = await readings.GetReadings();
             foreach (var item in listReadings)
             {
-                readingsFiltered.labels.Add(item.timestamp.ToString("HH:mm:ss dd.MM.yyyy"));
+                DateTime time = item.timestamp;
+                if (timezone != null)
+                {
+                    TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(timezone);
+                    time = TimeZoneInfo.ConvertTimeFromUtc(item.timestamp, tzi);
+                }
+
+                readingsFiltered.labels.Add(time.ToString("HH:mm:ss dd.MM.yyyy"));
                 readingsFiltered.data.Add(item.temperature!);
             }
 
