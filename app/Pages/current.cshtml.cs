@@ -30,10 +30,6 @@ public class CurrentModel : PageModel
         else if (temp > 25) Emoji = "🥵";
 
         Temperature = reading.temperature!;
-
-        CultureInfo loc = new CultureInfo("sl-SI");
-        TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("CET");
-
-        Timestamp = TimeZoneInfo.ConvertTimeFromUtc(reading.timestamp, tzi).ToString(loc);
+        Timestamp = reading.timestamp.ToString("HH:mm:ss dd.MM.yyyy");
     }
 }

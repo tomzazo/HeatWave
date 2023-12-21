@@ -33,14 +33,10 @@ namespace HeatWave.Pages
         {
             ReadingsFiltered readingsFiltered = new ReadingsFiltered();
 
-            CultureInfo loc = new CultureInfo("sl-SI");
-            TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("CET");
-
-
             List<Reading> listReadings = await readings.GetReadings();
             foreach (var item in listReadings)
             {
-                readingsFiltered.labels.Add(TimeZoneInfo.ConvertTimeFromUtc(item.timestamp, tzi).ToString(loc));
+                readingsFiltered.labels.Add(item.timestamp.ToString("HH:mm:ss dd.MM.yyyy"));
                 readingsFiltered.data.Add(item.temperature!);
             }
 
