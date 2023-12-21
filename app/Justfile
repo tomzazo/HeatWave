@@ -1,3 +1,7 @@
+# try building the project locally
+@build:
+	dotnet build
+
 # runs the project locally
 @run:
 	dotnet run
