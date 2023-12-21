@@ -1,0 +1,60 @@
+﻿@page
+@model HeatWave.Pages.HistoryModel
+@{
+    ViewData["Title"] = "Past 24 hours";
+}
+
+<div class="text-center">
+    <h6>Temperature readings for the past 24 hours:</h6>
+    <h1 id="chartPlaceholder" class="display-4">Loading...</h1>
+    <canvas id="tempChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+            if (xmlhttp.status == 200) {
+                document.getElementById('chartPlaceholder').style.display = "none";
+
+                let readingsFiltered = JSON.parse(JSON.parse(xmlhttp.responseText));
+
+                const tempChart = document.getElementById('tempChart');
+                new Chart(tempChart, {
+                    type: 'line',
+                    data: {
+                        labels: readingsFiltered.labels,
+                        datasets: [{
+                            data: readingsFiltered.data,
+                            fill: false,
+                            borderColor: 'rgb(245, 110, 110)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    maxRotation: 30,
+                                    minRotation: 30
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            else if (xmlhttp.status >= 400) {
+                alert('There was an error fetching temperature readings. Status: ', xmlhttp.status);
+            }
+        }
+    };
+    xmlhttp.open("GET", "/historyReadings", true);
+    xmlhttp.send();
+</script>

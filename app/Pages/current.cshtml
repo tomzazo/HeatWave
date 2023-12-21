@@ -1,0 +1,22 @@
+﻿@page
+@model CurrentModel
+@{
+    ViewData["Title"] = "Current temperature";
+}
+
+<style>
+    hr {
+        width: 20%;
+        margin: auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Emoji</h1>
+    <hr />
+    <h6>Latest temperature reading:</h6>
+    <h1 class="display-4">@Model.Temperature</h1>
+    <p>@Model.Timestamp</p>
+</div>

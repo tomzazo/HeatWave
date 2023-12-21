@@ -1,0 +1,19 @@
+# runs the project locally
+@run:
+	dotnet run
+
+# runs the project locally in watch mode with hot reloading
+@watch:
+	dotnet watch
+
+# deploys the application as a webapp on Azure
+@deploy:
+	az webapp up --name HeatWave --location northeurope --plan heatwave --resource-group heatwave --os-type linux
+
+# applies default configuration on the deployed application on Azure
+@config-deployed:
+    az webapp identity assign --name HeatWave --resource-group heatwave
+
+# starts a live log stream of the deployed application on Azure
+@logs-deployed:
+	az webapp log tail --name HeatWave --resource-group heatwave
