@@ -59,3 +59,7 @@ The following pages are currently available:
 - /history
 
   <img src="assets/history.png" alt="drawing" width="600"/>
+
+### Disclaimer
+
+This project serves as an environment for learning technologies and concepts. May not follow best practice.
