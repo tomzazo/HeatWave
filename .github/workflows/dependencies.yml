@@ -1,6 +1,5 @@
 name: Dependencies
 on:
-  push:
   schedule:
     - cron:  '0 17 1 1-12 *'
 jobs:
@@ -12,7 +11,6 @@ jobs:
       - name: Self-hosted Renovate
         uses: renovatebot/github-action@v40.0.2
         env:
-          # RENOVATE_DRY_RUN: full
           RENOVATE_REPOSITORIES: ${{ github.repository }}
         with:
           token: ${{ secrets.RENOVATE_TOKEN }}
