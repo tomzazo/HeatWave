@@ -8,7 +8,7 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "7.0.403"
-      - uses: extractions/setup-just@v1
+      - uses: extractions/setup-just@v2
         with:
           just-version: 1.17.0
       - run: just app/build
