@@ -13,6 +13,7 @@ An example of a simple ASP.NET Core application which fetches temperature readin
   - Resource group
   - App Service plan
   - Entra ID application for authentication with this webapp
+  - [Optional] Entra ID application for accessing the Azure Function - if app is deployed on premise
 - Azure CLI
   - User logged in
 - Dotnet SDK 7.0
@@ -36,6 +37,12 @@ An `app/appsettings.json` file should be created in the following fashion:
     "ClientId": "[client_id]",
     "CallbackPath": "/signin-oidc",
     "SignedOutCallbackPath": "/signout-oidc"
+  },
+  "OnPremiseInstance": [true|false], ### Set if deploying on premise.
+  "OnPremiseInstanceAzureEntraAppCredentials": { ### Must be provided if "OnPremiseInstance" is set to true.
+      "TenantId": "[entra_app_tenant_id]",
+      "ClientId": "[entra_app_client_id]",
+      "ClientSecret": "[entra_app_client_secret]"
   },
   "TemperatureSource": {
     "AzureAPIScope": "[scope_of_an_exposed_entra_id_application_of_the_azure_function_app]"

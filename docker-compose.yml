@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  # add proxy
+  app:
+    build:
+      dockerfile: resources/dotnet/Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./app:/runtime
