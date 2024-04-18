@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
@@ -20,11 +21,20 @@ builder.Services.AddRazorPages(option =>
 }).AddMicrosoftIdentityUI();
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-         .AddMicrosoftIdentityWebApp(builder.Configuration, "AzureAd");
+        .AddMicrosoftIdentityWebApp(builder.Configuration, "AzureAdLogin");
 
 builder.Services.AddScoped<ITemperatureReadings, TemperatureReadings>();
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownProxies.Clear();
+    options.KnownNetworks.Clear();
+});
+
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -34,7 +44,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();

@@ -2,6 +2,11 @@
 @run:
 	just app/run
 
+# runs the project locally in a container
+@run-docker:
+	just app/build
+	docker compose up --detach
+
 # runs the project locally in watch mode with hot reloading
 @watch:
 	just app/watch
@@ -13,3 +18,13 @@
 # starts a live log stream of the deployed application on Azure
 @app-logs:
 	just app/logs-deployed
+
+@push-docker:
+	just app/build
+	docker login
+	docker buildx build \
+		--platform linux/arm64 \
+		--tag tomazzazijal724/heatwave:latest \
+		--push \
+		--file resources/dotnet/Dockerfile \
+		.

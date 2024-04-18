@@ -19,7 +19,15 @@ namespace Services.API.TemperatureReadings
 
         public TemperatureReadings(IConfiguration config)
         {
-            azureAuthentication = new AzureManagedIdentityAuthentication(config);
+            bool? entraAppCredentials = config.GetValue<bool>("OnPremiseInstance");
+            if (entraAppCredentials != null && entraAppCredentials == true)
+            {
+                azureAuthentication = new AzureEntraAppAuthentication(config);
+            }
+            else
+            {
+                azureAuthentication = new AzureManagedIdentityAuthentication(config);
+            }
         }
 
         public async Task<Reading> GetReading()
