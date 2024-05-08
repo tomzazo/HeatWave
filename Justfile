@@ -13,6 +13,7 @@
 
 # deploys the application as a webapp on Azure
 @app-deploy:
+	just app/build
 	just app/deploy config-deployed
 
 # starts a live log stream of the deployed application on Azure
