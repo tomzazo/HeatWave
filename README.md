@@ -16,7 +16,7 @@ An example of a simple ASP.NET Core application which fetches temperature readin
   - [Optional] Entra ID application for accessing the Azure Function - if app is deployed on premise
 - Azure CLI
   - User logged in
-- Dotnet SDK 7.0
+- Dotnet SDK 8.0
 
 ### Required secrets
 
