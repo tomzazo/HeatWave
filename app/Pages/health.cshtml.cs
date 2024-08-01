@@ -7,7 +7,7 @@ namespace HeatWave.Pages
 {
     class Health
     {
-        public string Status { get; set; }
+        public required string Status { get; set; }
     }
 
     [AllowAnonymous]
